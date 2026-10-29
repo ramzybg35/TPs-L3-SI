@@ -66,4 +66,23 @@ $$
 \omega_0 = \frac{\omega_p}{\sqrt{1.0058}}
 \Rightarrow
 \omega_0 \simeq 914.7\ \mathrm{rad/s}
+$$ 
+Or on sait que :
+$$ \omega_0 = 2\pi f_0 \Rightarrow f_0 = \frac{\omega_0}{2\pi} \Rightarrow f_0 = 145.45\ \text{Hz}  
+$$ 
+Et $\frac{2m}{\omega_0} = \frac{0.4970 \omega_0}{2 \omega_p} $ On  remplace ${\omega_0}$ par son expression et on simplifie : $m = \frac{0.4970}{2 \sqrt{1.0058}} \Rightarrow m = 0.246$
+
+### Partie 2 :Filtre passe haut de Butterworth (ordre 3)
+- Cahier des charges :
+  - Frequence de coupure : $f_p = 400\ Hz$
+  - Fréquence d'atténuation : $f_a = 200\ Hz$
+
+1. Calcul  de la sélectivité $k$ pour un passe haut: la bande atténuée est avant la bande passante donc:
 $$
+k = \frac{f_a}{f_p}
+= \frac{200}{400}
+= 0.5
+\Rightarrow
+\frac{1}{k} = \frac{1}{0.5} = 2
+$$
+

@@ -1,5 +1,6 @@
 # Comptes rendus TP 1 à 6
 
+Diallo Ibrahima et Nans
 Comptes rendus des travaux pratiques de Systèmes Électroniques.
 
 ## TP n°2 : Synthèse de filtres
@@ -224,7 +225,7 @@ n\geq
 {2\log_{10}\left(f_p/f_a\right)}
 $$
 
-En reprenant \(A_{\min}=13\,\mathrm{dB}\), valeur utilisée dans le calcul initial :
+En reprenant $(A_{\min}=13\,\mathrm{dB})$, valeur utilisée dans le calcul initial :
 
 $$
 n\geq
@@ -498,3 +499,736 @@ $$
 \boxed{m\simeq0.5}
 $$
 
+## Manipulation
+### Partie 1 : Filtre passe bas de Tchébyscheff
+- Réponse en fréquence du filtre (gain et phase)
+
+### 1) Filtre passe-bas de Tchébychev
+
+| Grandeur | 50 Hz | 100 Hz | 146 Hz | 170 Hz | 300 Hz |
+|:---|---:|---:|---:|---:|---:|
+| Vpp de Vs (V) | 4,80 | 5,12 | 4,24 | 2,60 | 0,356 |
+| Vpp de Ve (V) | 5,12 | 5,28 | 5,12 | 5,12 | 5,12 |
+| Phase (°) | +47,34 | -91,8 | -166,8 | -160 | -117,8 |
+| Gain G | 0,9375 | 0,9697 | 0,8281 | 0,5078 | 0,0695 |
+
+- Calcul du gain : Pour chaque fréquence
+$$
+G=\frac{V_s}{V_e}
+$$
+
+A 50 Hz :  $G=\frac{4.8}{5.12} = \boxed{0,9375}$
+
+A 100 Hz : $G=\frac{5.12}{5.28} = \boxed{0,9697}$
+
+A 146 Hz : $G=\frac{4.24}{5.12} = \boxed{0,8281}$
+
+A 170 Hz : $G=\frac{2.6}{5.12} = \boxed{0,5078}$
+A 300 Hz : $G=\frac{0.356}{5.12} = \boxed{0,0695}$
+
+### Courbe du Gain
+
+![Filtre passe-bas de Tchébychev](TP2_Filtre_passe_bas_Tchebyscheff.png)
+
+### 2) Filtre passe-haut de Butterworth
+
+| Grandeur | 400 Hz | 100 Hz | 200 Hz | 300 Hz | 500 Hz | 700 Hz | 1000 Hz | 1500 Hz | 2000 Hz | 3000 Hz |
+|:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| Vpp de Vs (V) | 3,32 | 0,0844 | 0,620 | 1,86 | 4,24 | 4,80 | 4,96 | 5,04 | 5,08 | 5,08 |
+| Vpp de Ve (V) | 5,80 | 5,24 | 5,16 | 5,12 | 5,12 | 5,12 | 5,12 | 5,12 | 5,20 | 5,20 |
+| Phase (°) | -135 | +117 | -154 | -171 | +105 | +69 | +48,6 | +30 | +22,2 | +100 |
+| Gain G | 0,5724 | 0,0161 | 0,1202 | 0,3633 | 0,8281 | 0,9375 | 0,9688 | 0,9844 | 0,9769 | 0,9769 |
+
+- Calcul du Gain : Pour chaque fréquence
+$$
+G=\frac{V_s}{V_e}
+$$
+
+A 100 Hz : $G=\frac{0.0844}{5.24} = \boxed{0,0161}$
+
+A 200 HZ : $G=\frac{0.620}{5.16} = \boxed{0,1202}$
+
+A 500 Hz : $G=\frac{4.24}{5.12} = \boxed{0,8281}$
+
+A 1000 Hz : $G=\frac{4.96}{5.12} = \boxed{0,9688}$
+
+A 2000 Hz : $G=\frac{5.08}{5.2} = \boxed{0,9769}$
+
+
+### Courbe du Gain
+
+![Filtre passe-bas de Tchébychev](TP2_Filtre_passe_haut_Butterworth.png)
+
+
+
+# TP 5 : Modulations d’amplitude et de fréquence
+
+## Préparation
+
+# A. Modulation d’amplitude (AM)
+
+### 1. Indice de modulation $m_a$ en fonction de $V_m$ et $k$
+
+D'après le schéma du multiplicateur AD633 :
+
+$$
+W=kXY+Z
+$$
+
+avec :
+
+$$
+k=\frac{1}{10}\ \mathrm{V}^{-1}
+$$
+
+Les signaux d'entrée sont :
+
+$$
+\begin{aligned}
+X(t) &= V_m \cos(\omega_m t) \\[6pt]
+Y(t) &= V_p \cos(\omega_p t) \\[6pt]
+Z(t) &= Y(t) = V_p \cos(\omega_p t)
+\end{aligned}
+$$
+
+Ainsi, la sortie $W(t)=S(t)$ vaut :
+
+$$
+\begin{aligned}
+S(t) &= k \left[
+V_m \cos(\omega_m t) \times V_p \cos(\omega_p t)
++ V_p \cos(\omega_p t)
+\right]
+\end{aligned}
+$$
+
+En factorisant :
+
+$$
+S(t)=V_p[1+kV_m\cos(\omega_m t)]\cos(\omega_p t)
+$$
+
+Or, la formule générale est :
+
+$$
+S(t)=V_p[1+m_a\cos(\omega_m t)]\cos(\omega_p t)
+$$
+
+Ainsi, par identification :
+
+$$
+m_a=kV_m=0,1\times 5
+$$
+
+**Résultat :**
+
+$$
+\boxed{m_a=0,5\quad (50\%)}
+$$
+
+### 2. Spectre d'une modulation d'amplitude à porteuse conservée (MAPC)
+
+On sait que :
+
+$$
+\cos(a)\cos(b)=\frac{1}{2}[\cos(a+b)+\cos(a-b)]
+$$
+
+Donc :
+
+$$
+\begin{aligned}
+S(t)={}&V_p\cos(\omega_p t)\\
+&+\frac{m_aV_p}{2}\cos[(\omega_p+\omega_m)t]\\
+&+\frac{m_aV_p}{2}\cos[(\omega_p-\omega_m)t]
+\end{aligned}
+$$
+
+En tenant compte du signe et de la phase du dernier terme, le spectre comporte 3 raies :
+
+1. Spectre du signal modulé
+
+1. La porteuse :
+
+$$
+f_p = 100\ \mathrm{kHz}
+$$
+
+2. La bande latérale supérieure :
+
+$$
+f_p+f_m=100+10=110\ \mathrm{kHz}
+$$
+
+3. La bande latérale inférieure :
+
+$$
+f_p-f_m=100-10=90\ \mathrm{kHz}
+$$
+
+Données :
+
+$$
+\begin{aligned}
+f_p &= 100\ \mathrm{kHz}\
+f_m &= 10\ \mathrm{kHz}\
+V_p &= 5\ \mathrm{V}\
+V_m &= 5\ \mathrm{V}
+\end{aligned}
+$$
+
+Calcul de l'indice de modulation :
+
+On utilise la relation :
+
+$$
+m_a=\frac{V_m}{V_p}
+=\frac{5}{5}=1
+$$
+
+Calcul des amplitudes des raies :
+
+Amplitude de la porteuse :
+
+$$
+A_p=V_p=5\ \mathrm{V}
+$$
+
+Amplitude des bandes latérales :
+
+$$
+A_{BL}=\frac{V_p m_a}{2}
+=\frac{5\times 1}{2}
+$$
+
+$$
+\boxed{A_{BL}=2,5\ \mathrm{V}}
+$$
+**Représentation du spectre :**
+
+| Fréquence | Composante | Amplitude |
+|---:|---|---:|
+| 90 kHz | Bande latérale inférieure | 1,25 V |
+| 100 kHz | Porteuse | 5 V |
+| 110 kHz | Bande latérale supérieure | 1,25 V |
+
+### 3. Démodulation synchrone : filtre passe-bas idéal
+
+Expression de la porteuse :
+
+2. Démodulation synchrone : filtre passe-bas idéal
+
+Expression du signal modulé :
+
+$$
+s(t)=A(t)\cos(\omega_p t)
+$$
+
+Le signal issu du multiplicateur analogique peut s'écrire :
+
+$$
+u(t)=ks(t)p(t)
+$$
+
+Avec :
+
+$$
+p(t)=V_p\cos(\omega_p t)
+$$
+
+qui représente la deuxième entrée du multiplicateur.
+
+Ainsi :
+
+$$
+u(t)=kA(t)\cos(\omega_p t)
+\times V_p\cos(\omega_p t)
+$$
+
+$$
+u(t)=kA(t)V_p\cos^2(\omega_p t)
+$$
+
+Or :
+
+$$
+\cos^2(a)=\frac{1+\cos(2a)}{2}
+$$
+
+Donc :
+
+$$
+u(t)=\frac{kV_pA(t)}{2}
++\frac{kV_pA(t)}{2}\cos(2\omega_p t)
+$$
+
+On obtient finalement :
+
+$$
+\boxed{
+u(t)=\frac{kV_pA(t)}{2}
+[1+\cos(2\omega_p t)]
+}
+$$
+Or, un filtre passe-bas (FPB) élimine la composante haute fréquence et ne conserve que la composante basse fréquence.
+
+Ainsi, le signal utile est :
+
+$$
+u(t)=
+\underbrace{\frac{kV_p}{2}A(t)}{\text{Signal utile}}
++
+\underbrace{\frac{kV_p}{2}A(t)\cos(2\omega_p t)}{\text{Composante HF}}
+$$
+
+Après filtrage, on obtient :
+
+$$
+\boxed{
+u_d(t)=\frac{kV_p}{2}A(t)
+}
+$$
+
+Calcul de la fréquence de coupure :
+
+On sait que, pour un filtre passe-bas idéal, la fréquence de coupure doit respecter :
+
+$$
+f_m<f_c<2f_p
+$$
+
+Avec :
+
+$$
+R=10\ \mathrm{k\Omega}
+\qquad
+C=10\ \mathrm{nF}
+$$
+
+La fréquence de coupure est :
+
+$$
+f_c=\frac{1}{2\pi RC}
+$$
+
+$$
+f_c=
+\frac{1}{2\pi\times10\times10^3
+\times10\times10^{-9}}
+$$
+
+$$
+\boxed{f_c\simeq1,59\ \mathrm{kHz}}
+$$
+
+Vérification de la condition :
+
+$$
+10\ \mathrm{kHz}<f_c<200\ \mathrm{kHz}
+$$
+
+---
+
+# B. Modulation de fréquence (FM)
+
+### Spectre pour \(m_f=2,5\)
+
+En modulation FM, c'est la fréquence instantanée qui varie en fonction du signal informatif.
+
+Donc, pour un signal modulé en fréquence par un sinus :
+
+$$
+S(t)=A\sum_{n=-\infty}^{+\infty}
+J_n(m_f)\cos[(\omega_p+n\omega_m)t]
+$$
+
+Où :
+
+$A$ est l'amplitude de la porteuse.
+
+$m_f$ est l'indice de modulation de fréquence.
+
+$J_n(m_f)$ représente les fonctions de Bessel de première espèce d'ordre $n$.
+
+Cas particulier remarquable :
+
+Pour $m_f=2,4$, la fonction de Bessel d'ordre zéro s'annule approximativement :
+
+$$
+J_0(2,4)\simeq0
+$$
+
+Ainsi, la raie de la porteuse à la fréquence $f_p$ disparaît pratiquement du spectre.
+
+Les coefficients lus sur la courbe des fonctions de Bessel sont :
+
+$J_0(2,4)\simeq0$
+
+$J_1(2,4)\simeq0,52$
+
+$J_2(2,4)\simeq0,43$
+
+$J_3(2,4)\simeq0,20$
+
+2. Vérification de la règle de Carson
+
+La règle de Carson permet d'estimer la largeur de bande occupée par un signal FM.
+
+Elle s'écrit :
+
+$$
+B=2(\Delta f+f_m)
+$$
+
+Or, l'excursion maximale de fréquence est :
+
+$$
+\Delta f=m_f f_m
+$$
+
+Donc :
+
+$$
+B=2(m_f f_m+f_m)
+$$
+
+$$
+B=2f_m(m_f+1)
+$$
+
+Pour $m_f=2,4$ :
+
+$$
+B=2f_m(2,4+1)
+$$
+
+Résultat :
+
+$$
+\boxed{B=6,8f_m}
+$$
+
+Détermination des raies significatives :
+
+Pour $m_f=2,4$, les raies significatives sont principalement celles correspondant aux ordres :
+
+$$
+n=-3,,-2,,-1,,0,,1,,2,,3
+$$
+
+Les raies d'ordre supérieur ne sont pas nulles, mais leurs amplitudes deviennent plus faibles.
+
+La largeur de bande correspondant aux raies allant de $n=-3$ à $n=+3$ est :
+
+$$
+B=2\times3\times f_m
+$$
+
+$$
+\boxed{B=6f_m}
+$$
+
+Cette valeur est proche de celle obtenue avec la règle de Carson :
+
+$$
+B_C=6,8f_m
+$$
+$$
+S(t)=A\sum_{n=-\infty}^{+\infty}
+J_n(m_f)\cos[(\omega_p+n\omega_m)t]
+$$
+
+Où :
+
+$A$ est l'amplitude de la porteuse.
+
+$m_f$ est l'indice de modulation de fréquence.
+
+$J_n(m_f)$ représente les fonctions de Bessel de première espèce d'ordre $n$.
+
+Cas particulier remarquable :
+
+Pour $m_f=2,4$, la fonction de Bessel d'ordre zéro s'annule approximativement :
+
+$$
+J_0(2,4)\simeq0
+$$
+
+Ainsi, la raie de la porteuse à la fréquence $f_p$ disparaît pratiquement du spectre.
+
+Les coefficients lus sur la courbe des fonctions de Bessel sont :
+
+$J_0(2,4)\simeq0$
+
+$J_1(2,4)\simeq0,52$
+
+$J_2(2,4)\simeq0,43$
+
+$J_3(2,4)\simeq0,20$
+
+2. Vérification de la règle de Carson
+
+La règle de Carson permet d'estimer la largeur de bande occupée par un signal FM.
+
+Elle s'écrit :
+
+$$
+B=2(\Delta f+f_m)
+$$
+
+Or, l'excursion maximale de fréquence est :
+
+$$
+\Delta f=m_f f_m
+$$
+
+Donc :
+
+$$
+B=2(m_f f_m+f_m)
+$$
+
+$$
+B=2f_m(m_f+1)
+$$
+
+Pour $m_f=2,4$ :
+
+$$
+B=2f_m(2,4+1)
+$$
+
+Résultat :
+
+$$
+\boxed{B=6,8f_m}
+$$
+
+Détermination des raies significatives :
+
+Pour $m_f=2,4$, les raies significatives sont principalement celles correspondant aux ordres :
+
+$$
+n=-3,,-2,,-1,,0,,1,,2,,3
+$$
+
+Les raies d'ordre supérieur ne sont pas nulles, mais leurs amplitudes deviennent plus faibles.
+
+La largeur de bande correspondant aux raies allant de $n=-3$ à $n=+3$ est :
+
+$$
+B=2\times3\times f_m
+$$
+
+$$
+\boxed{B=6f_m}
+$$
+
+Cette valeur est proche de celle obtenue avec la règle de Carson :
+
+$$
+B_C=6,8f_m
+$$
+
+La règle de Carson fournit une estimation plus large de la bande occupée et englobe environ 98 % de la puissance totale du signal FM.
+Ce qui est en accord avec les $(6,8f_m)$ de Carson, qui englobent plus de 98 % de l'énergie totale.
+
+## Manipulation
+
+**1-1)**
+
+### Signal modulé en amplitude  $W = S{(t)}$
+
+![Signal modulé en amplitude](TP5_Signal_Wt.jpeg)
+
+
+$$V_{A} = B_{y} - A_{y} = 3,80 + 3,88 = \underline{7,68\text{ V}}$$
+
+$$V_{B} = B'_{y} - A'_{y} = 1,48 + 1,56 = \boxed{3,04\text{ V}}$$
+
+$$m_{a} = \frac{7,68 - 3,04}{7,68 + 3,04} = \boxed{0,43} \quad \text{conforme au résultat théorique } (0,45)$$
+
+* **Amplitudes :** $2,37\text{ V}$ et $1\text{ V}$
+* **Fréquences des raies :** $90$, $100$ et $110\text{ kHz}$
+* Comme amplitude crête-crête de $10$, il faut $\times 2$ les amplitudes : $4,74$ et $2$.
+* Valeurs expérimentales conformes à la théorie.
+
+**1-2)** Deux (2) raies au lieu de 3 (celle du milieu a disparu).
+
+![Signal $s(t)$ modulé en Amplitude](TP5_signal_St.jpeg)
+
+
+* $\text{Ampl} : 0,6\text{ V}$ soit $1,2\text{ V}$.
+
+### 2) Démodulation : détection d'enveloppe
+
+**2-1)** Le détecteur d'enveloppe utilise une diode et un  filtre parallèle $RC$ pour extraire le signal basse fréquence $s(t)$ du signal modulé.
+
+![Décharge du condensateur](TP5_décharge_condensateur.jpeg)
+
+* Calcul des temps de charge et décharge du condensateur
+
+Pour un circuit $RC$ avec $R = 10\text{ k}\Omega$ ($10 \times 10^3\ \Omega$) et $C = 10\text{ nF}$ ($10 \times 10^{-9}\text{ F}$), le calcul repose sur la constante de temps $\tau$.
+
+1. Calcul de la constante de temps ($\tau$)$$\tau = R \times C = (10 \times 10^3) \times (10 \times 10^{-9}) = 10^{-4}\text{ s} = \mathbf{100\ \mu\text{s}} \quad (\text{soit } 0,1\text{ ms})$$
+
+2. Temps de charge et de décharge
+
+En pratique, la charge ou la décharge d'un condensateur est exponentielle. On retient trois seuils de référence :
+
+À $t = \tau = \mathbf{100\ \mu\text{s}}$ : Le condensateur est chargé à $63\%$ (ou déchargé à $37\%$ de sa valeur initiale).
+
+À $t = 3\tau = \mathbf{300\ \mu\text{s}}$ : Le condensateur est chargé à $95\%$ (ou déchargé à $5\%$).
+
+Temps complet ($t = 5\tau$) : On considère le régime permanent atteint à $99\%$ au bout de $5\tau$, soit :$$t_{\text{charge}} = t_{\text{décharge}} = 5 \times 100\ \mu\text{s} = \mathbf{500\ \mu\text{s}} \quad (\text{soit } \mathbf{0,5\text{ ms}})$$
+
+**2-2)** Calcul de C Pour $ R = $10\text{ k}\Omega$, $f_m = 1\text{ kHz}$ : on aura $C = 10 \text{ nF}$
+
+**2-3)** Déformation de la tension Vd(t) pour $V_m = 10\text{ V} \text{puis}\ f_m = 10\text{ kHz}$
+
+![Déformation en tension Vd](TP5_Deformation_tension_Vd.jpeg)
+
+On a bien une déformation de la tension de sortie car le condensateur n'a le temps suffissant pour se charger complement avant de se décharge. Ainsi on rémarque des petits pics de charge puis une petite décharge et ainsi de suite.
+
+### 3) Démodulation synchrone
+
+**3-1)** Signal démodulé Vd(t) avec les signaux MAPC et MAPS :
+
+![Signal démodulé Vd](TP5_signal_démodulé_MAPC_MAPS.jpeg)
+
+* $f = 10\text{ kHz}$, 
+* composante continue $47\text{ mV}$.
+* $\text{Amplitude} = 276\text{ mV}$ ($544\text{ mV}$ crête-à-crête).
+
+**3-2)**
+![Déformation de la tension Vd(t)](TP5_signal_démodulé_MAPC_MAPS_Vm_Fm.jpeg)
+* $V_{\text{AVG}} = 45\text{ mV}$, $f = 10\text{ kHz}$
+* $\text{Ampl} = 68\text{ mV}$ ($344 - 276$)
+* $f_m = 10\text{ kHz}$
+* $V_m = 10\text{ V}$
+
+**3-3)** Dans une démodulation synchrone, si la fréquence de la porteuse locale du démodulateur ($f'_p$) n'est pas rigoureusement égale à la fréquence de la porteuse du modulateur ($f_p$), la démodulation échoue et le signal utile est déformé par un phénomène de battement.
+
+La principale difficulté de la démodulation synchrone réside dans le fait que l'information de référence (la porteuse) est absente du signal reçu (modulation à porteuse supprimée) : le récepteur doit donc la reconstituer localement avec une précision absolue, aussi bien en fréquence qu'en phase.
+
+Concrètement, cette contrainte pose quatre difficultés majeures :
+
+1. Aucune raie porteuse disponible pour se caler
+2. Dérive inévitable des oscillateurs locaux
+3. Sensibilité critique au déphasage ($\Delta\varphi$)
+4. Complexité et coût du circuit de récupération
+
+
+
+# TP n°6 : Acquisition de données 
+## Préparation 
+1. Gain différentiel $A_d$ en fonction de $R_1$ et $R_2$ de l'Amplificateur du 1) :
+À l'entrée inverseuse ($V^-$) : théorème de Millman entre $V_{e1}$ et $V_s$ :
+$$V^- = \frac{\frac{V_{e1}}{R_1} + \frac{V_s}{R_2}}{\frac{1}{R_1} + \frac{1}{R_2}} = \frac{R_2 V_{e1} + R_1 V_s}{R_1 + R_2}$$
+À l'entrée non-inverseuse ($V^+$) : pont diviseur formé par $R_1$ et $R_2$ :
+$$V^+ = \frac{R_2}{R_1 + R_2} V_{e2}$$
+Or pour un amplificateur idéal : $V^+ = V^-$ 
+$$R_2 V_{e2} = R_2 V_{e1} + R_1 V_s \implies V_s = \frac{R_2}{R_1} (V_{e2} - V_{e1})$$
+Le gain différentiel vaut donc :$$A_d = \frac{R_2}{R_1}$$
+AN : avec $R_1 = 10\text{ k}\Omega$ 
+et $R_2 = 100\text{ k}\Omega$ : \
+$A_d = \frac{100}{10} = \mathbf{10}$
+
+2. Gain de mode commun $A_{mc}$ et origine physique : Lorsque les deux entrées reçoivent le même potentiel ($V_{e1} = V_{e2} = V_{mc}$), le gain de mode commun est le rapport : 
+$$A_{mc} = \left.\frac{V_s}{V_{mc}}\right\vert{}_{V_d = 0}$$
+Il n'est pas nul dans le cas réel car :
+
+- Dispersion des résistances : les resistances réelles  ont une tolérance (souvent 1% ou 5%), ce qui déséquilibre l'égalité des rapports $\frac{R_2}{R_1}$ entre les deux branches.
+
+- Imperfection de l'AOP : l'amplificateur opérationnel possède un taux de réjection de mode commun fini ($\text{TRMC}_{\text{AOP}}$ non infini) qui génère une tension de sortie même si $V^+ - V^- = 0$.
+
+3. Capteur de température TMP36
+
+- Caractéristiques constructeur :   
+
+
+## Manipulation
+
+### 1) Amplificateur différentiel
+
+Expression de $V_s$ en fonction de $V_{e1}$, $V_{e2}$, $R_1$ et $R_2$ :
+
+* **Par Millman :**
+  $$e^{-} = \frac{\frac{V_{e1}}{R_{1}} + \frac{V_{s}}{R_{2}}}{\frac{1}{R_{1}} + \frac{1}{R_{2}}} = \frac{R_{2}V_{e1} + R_{1}V_{s}}{R_{1} + R_{2}}$$
+
+* **Par pont diviseur de tension :**
+  $$e^{+} = V_{+} = \frac{R_{2}}{R_{1} + R_{2}} V_{e2}$$
+
+Or, pour un AOP idéal : $e^{-} = e^{+}$
+
+$$\frac{R_{2}V_{e1} + R_{1}V_{s}}{R_{1} + R_{2}} = \frac{R_{2}}{R_{1} + R_{2}} V_{e2}$$
+
+$$\Rightarrow R_{1}V_{s} = R_{2}(V_{e2} - V_{e1}) \longrightarrow \boxed{V_{s} = \frac{R_{2}}{R_{1}}(V_{e2} - V_{e1})}$$
+
+#### Calcul du gain différentiel :
+
+* Pour $R_{1} = 10\text{ k}\Omega$ et $R_{2} = 100\text{ k}\Omega$ :
+  $$A_{d} = \frac{R_{2}}{R_{1}} = \frac{100}{10} \Rightarrow \boxed{A_{d} = 10}$$
+
+* Pour $R_{1} = 10\text{ k}\Omega$ et $R_{2} = 1000\text{ k}\Omega$ :
+  $$A_{d} = \frac{R_{2}}{R_{1}} = \frac{1000}{10} \Rightarrow \boxed{A_{d} = 100}$$
+
+**1-1)** 
+Pour $V_e = 2\text{ mV}$ (ou $V_g$):
+* Avec $R_2 = 100\text{ k}\Omega$ : on a $V_s = 17\text{ mV}$ (facteur $10$, donc quasiment un facteur $10$).
+* Avec $R_2 = 1\text{ M}\Omega$ : $V_s = 68\text{ mV}$.
+
+**1-2)** $f = 1\text{ kHz}$
+* $R = 1\text{ M}\Omega$ : $V_s = 36\text{ mV}$ ; $V_e = 5,16\text{ V} \Rightarrow A_{mc} = 0,007$
+* $R = 100\text{ k}\Omega$ : $V_s = 62,4\text{ mV}$ ; $V_e = 5,16\text{ V} \Rightarrow A_{mc} = 0,012$
+
+> Les imperfections sont liées au gain différentiel car il est faible.
+
+**1-3)**
+* Amplitude $2,5\text{ V}_{\text{pp}}$ :
+  $$A_{d} = \frac{V_{s}}{V_{e}} = \frac{26}{2,7} \approx 9,6 \quad (\text{pour } R = 100\text{ k}\Omega)$$
+  *(Sensiblement un facteur 10 entre entrée et sortie)*
+
+* Amplitude $200\text{ mV}_{\text{pp}}$ :
+  $$A_{d} = \frac{21,2}{0,24} \approx 88 \quad (\text{pour } R = 1\text{ M}\Omega)$$
+  *(Sensiblement un facteur 100)*
+
+#### Calculs du TRMC (Taux de Réjection du Mode Commun) :
+
+* $\text{TRMC}_{100\text{k}} = 20 \log\left(\frac{A_{d}}{A_{mc}}\right) = 20 \log\left(\frac{9,6}{0,012}\right) \approx 58,1\text{ dB}$
+* $\text{TRMC}_{1\text{M}} = 20 \log\left(\frac{A_{d}}{A_{mc}}\right) = 20 \log\left(\frac{88}{0,007}\right) \approx 81,99\text{ dB}$
+
+#### Erreur de mode commun (si $V_{mc} = 5\text{ V}$ et $V_d = 1\text{ mV}$) :
+
+$$E = A_{d}(1\text{ mV}) + A_{mc}(5\text{ V})$$
+* Pour $100\text{ k}\Omega$ : $E = 0,0096 + 0,06 = 0,0696\text{ V}$
+* *(Note marginale : $0,123$ non idéal)*
+
+### Température
+**2-1)** $V_m = 0,704\text{ V}$
+$$T = 100 \times 0,704 - 50 = 20,4^\circ\text{C}$$
+
+### Pression
+**2-2)** Mesure en différentiel :
+$$4,4893 - 4,4718 = 0,0175\text{ V} \quad (\text{relevé } 0,0179\text{ V})$$
+
+$$\frac{1}{0,18} \times 0,0179 \cdot 10^{3} = 99,45\text{ kPa} = 994,4\text{ hPa} \approx 1000\text{ hPa}$$
+
+* Note : $\frac{1}{0,18} \approx 5,55$. Le calcul du gain se détermine par le quotient du $S'$ souhaité sur le $S$ de départ ($S' = 1$, $S = 0,18$).
+
+$$V_{mc} = \frac{V_{\text{out}+} + V_{\text{out}-}}{2} = \frac{4,4893 + 4,4718}{2} = 4,4806\text{ V}$$
+
+**3-1)** $V_s = 1,015\text{ V}$, le gain $G = A_d$ vaut :
+$$A_d = \frac{V_{s}}{V_{e}} = \frac{1,015}{0,0179} = \boxed{56,7}$$
+
+**3-2)** $V_s = V_g = 8\text{ mV}$
+$$V_{s} = A_{d}(V_{\text{in}+} - V_{\text{in}-}) + A_{mc}\left[\frac{V_{\text{in}+} + V_{\text{in}-}}{2}\right]$$
+avec $V_{\text{in}+} - V_{\text{in}-} = 0,0179\text{ V}$.
+
+**3-3)**
+$$A_{mc} = \frac{V_{s}}{V_{e}} = \frac{17,8}{20,6} \approx 0,86$$
+
+**3-4)**
+* $A_{d} = \frac{V_{s}}{V_{e}} = \frac{28,4}{0,56} \approx 50,7$ (avec $V_e = 560\text{ mV}$)
+* $\text{TRMC} = 20 \log\left(\frac{A_{d}}{A_{mc}}\right) = 35,4\text{ dB}$
+* Fréquence de coupure : $V_{\max} = 28,4 \implies 28,4 \times 0,707 = 20,08 \implies f_c = 116\text{ kHz}$ (ou $1\text{ kHz}$).

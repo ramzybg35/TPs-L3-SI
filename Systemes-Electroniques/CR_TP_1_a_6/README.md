@@ -1,15 +1,264 @@
 # Comptes rendus TP 1 à 6
 
 Diallo Ibrahima et Nans
+
 Comptes rendus des travaux pratiques de Systèmes Électroniques.
 
-## TP n°2 : Synthèse de filtres
+# TP n°1 : Filtres actifs du second ordre 
+## Préparation 
 
-### Préparation
+Structure de Rauch permet de réaliser des filtres actifs du second ordre de type passe bas, passe haut et passe bande. 
 
-## Partie 1 : Filtre passe-bas de Tchébycheff (ordre 3)
+**1)** Expression de la fonction de transfert $H(p) = \frac{V_s}{V_e}$ en fonction des admitances : $Y_1, Y_2, Y_3, Y_4 \ et \ Y_5$
 
-### 1. Gabarit et facteur de sélectivité \(k\)
+
+Sur la structure de Rauch, nous pouvons établir deux tensions :
+* $V_A$ : la tension du nœud $A$ entre $Y_1$, $Y_2$, $Y_3$ et $Y_4$.
+* $V_B$ : la tension du nœud $B$ entre $Y_3$ et $Y_5$ (entrée inverseuse de l'AOP, avec $V_B = 0$).
+
+### 1) Fonction de transfert
+
+**Appliquons la loi des nœuds au point $B$ :**
+$$Y_3(V_A - 0) + Y_5(V_s - 0) = 0 \Rightarrow V_A = -\frac{Y_5}{Y_3} V_s$$
+
+**Appliquons la loi des nœuds au point $A$ :**
+$$Y_1(V_A - V_e) + Y_2 V_A + Y_3 V_A + Y_4(V_A - V_s) = 0$$
+$$V_A (Y_1 + Y_2 + Y_3 + Y_4) - Y_1 V_e - Y_4 V_s = 0$$
+
+On remplace $V_A$ par son expression, ce qui nous donne :
+$$H(p) = \frac{V_s}{V_e} = -\frac{Y_1 Y_3}{Y_3 Y_4 + Y_5(Y_1 + Y_2 + Y_3 + Y_4)}$$
+
+---
+
+### 2) Déterminons le type des admittances $Y_i$ (Résistance ou condensateur) pour réaliser des filtres du second ordre
+
+* **Passe-bas :**
+  Forme canonique :
+  $$H(p) = \frac{A}{\frac{p^2}{\omega_0^2} + \frac{2m}{\omega_0}p + 1}$$
+  Il faut une constante au numérateur, soit $Y_1$ et $Y_3$ des résistances, et aussi $Y_4$ pour la constante du dénominateur. Donc :
+  * $Y_1, Y_3, Y_4$ = résistances
+  * $Y_2, Y_5$ = condensateurs
+
+* **Passe-haut :**
+  Forme canonique :
+  $$H(p) = \frac{A \frac{p^2}{\omega_0^2}}{\frac{p^2}{\omega_0^2} + \frac{2m}{\omega_0}p + 1}$$
+  Il faut $p^2$ au numérateur, donc :
+  * $Y_1, Y_3, Y_4$ = condensateurs
+  * $Y_2, Y_5$ = résistances
+
+* **Passe-bande :**
+  Forme canonique :
+  $$H(p) = \frac{A \frac{2m}{\omega_0}p}{\frac{p^2}{\omega_0^2} + \frac{2m}{\omega_0}p + 1}$$
+  Il faut $p$ au numérateur, donc :
+  * $Y_1, Y_2$ = condensateurs *(ou $Y_2, Y_3$ selon le montage)*
+  * $Y_3, Y_5, Y_4$ = résistances *(ou $Y_1, Y_4, Y_5$)*
+
+---
+
+### 3) Calcul des composants pour les 3 filtres
+
+* **$C_5$ pour le filtre passe-bas :**
+  Après identification avec la forme canonique, on trouve :
+  $$\frac{1}{\omega_0^2} = R^2 C_2 C_5 \quad \text{et} \quad \frac{2m}{\omega_0} = 3 R C_5$$
+  On en déduit :
+  $$\omega_0 = \frac{1}{R\sqrt{C_2 C_5}} \quad \text{et} \quad m = \frac{3}{2}\sqrt{\frac{C_5}{C_2}}$$
+  Donc :
+  $$C_5 = C_2 \left(\frac{2m}{3}\right)^2$$
+
+* **Fréquence de coupure :**
+  $$f_0 = \frac{\omega_0}{2\pi}$$
+
+* **Gain et fréquence de résonance $f_r$ :**
+  $$f_r = f_0\sqrt{1 - 2m^2} \quad \text{(passe-bas) ou } f_r = \frac{f_0}{\sqrt{1 - 2m^2}} \quad \text{(passe-haut)}$$
+  $$G_{\max} = \frac{1}{2m\sqrt{1 - m^2}}$$
+
+# Manipulation
+
+## 1) Filtre passe-bas
+
+**Données :**
+* $R = 4,7\text{ k}\Omega$
+* $m = 0,707$
+* $C_2 = 100\text{ nF}$
+
+### Calcul de $C_5$ :
+D'après le schéma fourni, nous pouvons appliquer la loi des nœuds :
+* **Au point A :** une tension $V_A$ entre les 3 résistances et le condensateur $C_2$.
+* **Au point B :** une tension $V_B$ à l'entrée inverseuse de l'AOP.
+
+**Déterminons la fonction de transfert :**
+
+* **Au point A :**
+$$\frac{V_A - V_e}{R} + \frac{V_A - V_B}{R} + \frac{V_A - V_s}{R} + p C_2 V_A = 0$$
+
+Comme $V_B = 0$ et en mettant tout au même dénominateur :
+$$V_A - V_e + V_A + V_A - V_s + R C_2 p V_A = 0$$
+$$\Rightarrow 3 V_A - V_e - V_s + R C_2 p V_A = 0$$
+$$\text{Donc : } V_e + V_s = V_A (3 + R C_2 p)$$
+
+* **Au point B :**
+$$\frac{V_B - V_A}{R} + p C_5 (V_B - V_s) = 0$$
+
+Or $V_B = 0 \Rightarrow -\frac{V_A}{R} - p C_5 V_s = 0 \Rightarrow V_A = -R C_5 p V_s$
+
+On remplace $V_A$ dans l'équation précédente :
+$$V_e + V_s = -R p C_5 V_s (3 + R C_2 p)$$
+$$V_s (1 + 3 R p C_5 + R^2 C_2 C_5 p^2) = -V_e$$
+$$H(p) = \frac{-1}{1 + 3 R p C_5 + R^2 C_2 C_5 p^2}$$
+
+---
+
+$H(p)$ est de la forme d'une fonction de transfert du second ordre d'un filtre passe-bas :
+$$H(p) = \frac{H_0}{1 + \frac{2m}{\omega_0}p + \frac{p^2}{\omega_0^2}}$$
+
+**Par identification, on en déduit :**
+* $\frac{2m}{\omega_0} = 3 R C_5$
+* $\frac{1}{\omega_0^2} = R^2 C_2 C_5 \Rightarrow \omega_0 = \frac{1}{R\sqrt{C_2 C_5}}$
+* $m = \frac{3}{2}\sqrt{\frac{C_5}{C_2}} \Rightarrow C_5 = C_2 \left(\frac{2m}{3}\right)^2$
+
+**Application Numérique (AN) :**
+$$C_5 = 100 \times \left(\frac{2 \times 0,707}{3}\right)^2 \approx 22,22\text{ nF}$$
+$$\omega_0 = \frac{1}{4,7 \cdot 10^3 \times \sqrt{10^{-7} \times 22,22 \cdot 10^{-9}}} = 4513,67\text{ rad/s}$$
+$$f_0 = \frac{\omega_0}{2\pi} = \frac{4513,67}{2\pi} \Rightarrow f_0 = f_c = 718,37\text{ Hz}$$
+
+### Calcul du gain statique $K$ :
+$K = |H(p)|$ lorsque $\omega \to 0$.
+Pour $\omega = 0$, $H(0) = -1 \Rightarrow K = |-1| = 1$.
+
+En décibels :
+$$G = 20 \log(1) = 0\text{ dB}$$
+
+### Déterminons les asymptotes du déphasage :
+On écrit $H(j\omega)$ sous la forme canonique et on évalue son module et son argument :
+* Pour $\omega = 0 \Rightarrow |H(0)| = 1 \Rightarrow \arg(H(\omega = 0)) = \pm 180^\circ$ (ou $0^\circ$ au signe près)
+* Pour $\omega \to \infty \Rightarrow \arg(H(\omega \to \infty)) = -180^\circ$
+* Pour $\omega = \omega_c = \frac{1}{R\sqrt{C_2 C_5}} \Rightarrow |H(\omega_c)| = \frac{1}{2m} \Rightarrow \arg(H(\omega_c)) = -90^\circ$
+
+### Prise des mesures :
+
+| Fréquences (Hz) | Gain (dB) | Phase (°) |
+| :--- | :--- | :--- |
+| 100 | $0\text{ dB}$ | $-11^\circ$ |
+| 200 | $0\text{ dB}$ | $-23^\circ$ |
+| 500 | $-0,9\text{ dB}$ | $-62,3^\circ$ |
+| 600 | $-1,7\text{ dB}$ | $-75,6^\circ$ |
+| 700 | $-3\text{ dB}$ | $-90^\circ$ |
+| 800 | $-4\text{ dB}$ | $-98,6^\circ$ |
+| 1000 | $-6,8\text{ dB}$ | $-115,4^\circ$ |
+| 2000 | $-17,8\text{ dB}$ | $-149,7^\circ$ |
+
+### Courbe de Gain et de Phase
+
+![Courbe de gain](TP1_filtre_passe_bande.png)
+
+
+### 1-2) Signal carré avec $f = 100\text{ Hz}$ et $V_{pp} = 5\text{ V}$
+
+* **Mesure prise :** $D_1 = 520\text{ mV}$ et $T_r = 4,4\text{ ms}$
+* **Valeur théorique :** 
+  $$D_1\% = \exp\left(\frac{-m\pi}{\sqrt{1-m^2}}\right)$$
+  Avec $m = 0,707$ : $\Delta_1 = 0,432\text{ V} = 432\text{ mV}$
+  $$T_r = \frac{3}{m \omega_0}$$
+  Avec $\omega_0 = 4513\text{ rad/s}$ : $T_r = 0,94\text{ ms} \approx 1\text{ ms}$
+
+* **Mesure prise avec $C_5 = 1\text{ nF}$ :** $D_1 = 3,9\text{ V}$ et $T_r = 1,7\text{ ms}$
+* **Valeur théorique :**
+  $$m = \frac{3}{2}\sqrt{\frac{C_5}{C_2}} = \frac{3}{2}\sqrt{\frac{1}{100}} = 0,15$$
+  $$\omega_0 = \frac{1}{R\sqrt{C_2 C_5}} = 21276,6\text{ rad/s}$$
+  $$\Delta_1 = V_{pp} \times \exp\left(\frac{-m\pi}{\sqrt{1-m^2}}\right) = 2,9\text{ V}$$
+  $$T_r = \frac{3}{m \omega_0} \simeq 1,99\text{ ms}$$
+
+---
+
+## 2) Filtre passe-haut
+
+$$H(p) = \frac{-R_2 R_5 p^2 C^2}{R_2 R_5 p^2 C^2 + 3 R_2 C p + 1}$$
+
+Avec :
+* $\omega_0 = \frac{1}{C\sqrt{R_2 R_5}}$
+* $m = \frac{3}{2}\sqrt{\frac{R_2}{R_5}}$
+
+### Calcul de $R_2$ pour obtenir un amortissement $m = 0,2$ avec $R_5 = 100\text{ k}\Omega$ :
+$$0,2 = \frac{3}{2}\sqrt{\frac{R_2}{100 \cdot 10^3}} \Rightarrow R_2 = \frac{2^2 \times 0,2^2 \times 10^5}{9} \Rightarrow R_2 \simeq 1,78\text{ k}\Omega \text{ (noté } 8,889\text{ k}\Omega \text{ sur la copie)}$$
+
+### Déterminons les asymptotes :
+* Pour $\omega = 0 \Rightarrow |H(\omega = 0)| = 0 \Rightarrow \arg(H(\omega = 0)) = 0^\circ$
+* Pour $\omega = \omega_c = \frac{1}{C\sqrt{R_2 R_5}} \Rightarrow |H(\omega_c)| = \frac{1}{2m} \Rightarrow \arg(H(\omega_c)) = 180^\circ$ (ou $+90^\circ$)
+* Pour $\omega \to \infty \Rightarrow |H(\omega \to \infty)| = 1 \Rightarrow \arg(H(\omega \to \infty)) = +180^\circ$
+
+### Calcul de la pulsation de coupure, la fréquence de résonance $f_r$ et le coefficient de surtension $V_m$ :
+* **Coefficient de surtension :**
+  $$V_m = \frac{1}{2m\sqrt{1-m^2}} = \frac{1}{0,4\sqrt{1 - 0,2^2}} = 2,55$$
+* **Pulsation propre et de résonance :**
+  $$\omega_0 = \frac{1}{10^{-7}\sqrt{100 \cdot 10^3 \times 1,8 \cdot 10^3}} \Rightarrow \omega_0 = 745\text{ rad/s}$$
+  $$\omega_r = \frac{\omega_0}{\sqrt{1 - 2m^2}} = 776\text{ rad/s} \text{ (noté } 714\text{ rad/s sur la copie)}$$
+* **Fréquences :**
+  $$f_0 = \frac{\omega_0}{2\pi} \Rightarrow f_0 = \frac{745}{2\pi} = 118,6\text{ Hz}$$
+  $$f_r = \frac{f_0}{\sqrt{1 - 2m^2}} \simeq 123,25\text{ Hz}$$
+
+### Prise de mesure pratique :
+À $f = 123\text{ Hz}$, $V_s = 12,6\text{ V}$ (pour $V_e = 5\text{ V}$).
+Donc :
+$$V_m = \frac{12,6}{5} = 2,52$$
+La surtension mesurée correspond à la surtension théorique.
+
+---
+
+## 3) Filtre passe-bande
+
+$$H(p) = \frac{-R C_1 p}{R^2 C_1 C_5 p^2 + 3 p R C_1 + 1}$$
+
+### Déterminons $C_5$ lorsque $C_1 = C_2 = C = 100\text{ nF}$ et $R_3 = R_4 = R = 4,7\text{ k}\Omega$ :
+On a :
+$$\frac{2m}{\omega_0} = 3 R C_1 \quad \text{et} \quad \omega_0 = \frac{1}{R\sqrt{C C_5}}$$
+$$m = \frac{3}{2}\sqrt{\frac{C_1}{C_5}}$$
+
+Pour un facteur de qualité $Q = \frac{1}{2m} = 5 \Rightarrow m = \frac{1}{2 \times 5} = 0,1$ :
+$$C_5 = C_1 \left(\frac{3}{2m}\right)^2 = 10^{-7} \times \left(\frac{3}{0,2}\right)^2 = 22,5\ \mu\text{F} \text{ (noté } 2,25\ \mu\text{F sur la copie)}$$
+
+### Asymptotes :
+* Pour $\omega = 0 \Rightarrow |H(\omega = 0)| = 0 \Rightarrow \arg(H(\omega = 0)) = +90^\circ$
+* Pour $\omega \to \infty \Rightarrow |H(\omega \to \infty)| = 0 \Rightarrow \arg(H(\omega \to \infty)) = -90^\circ$
+* Pour $\omega = \omega_0 = \frac{1}{R\sqrt{C C_5}} \Rightarrow |H(\omega_0)| = \frac{1}{3} \text{ (ou } Q\text{)} \Rightarrow \arg(H(\omega_0)) = 180^\circ$
+
+### Calcul de $f_0$ :
+$$\omega_0 = \frac{1}{R\sqrt{C C_5}} \quad \text{avec } C_5 = 2,25\text{ nF}$$
+$$\omega_0 = \frac{1}{4,7 \cdot 10^3 \sqrt{10^{-7} \times 2,25 \cdot 10^{-9}}} = 14184,4\text{ rad/s} \text{ (noté } 14344,68\text{ rad/s)}$$
+$$f_0 = \frac{\omega_0}{2\pi} = 2283,02\text{ Hz}$$
+
+### Coefficient de qualité $Q$ :
+$$m = \frac{3}{2}\sqrt{\frac{C_1}{C_5}} = \frac{3}{2}\sqrt{\frac{10^{-7}}{2,25 \cdot 10^{-9}}} = 10$$
+$$\text{Or } Q = \frac{1}{2m} = \frac{1}{2 \times 10} = 0,05$$
+
+### Prise de mesure :
+$V_{pps} = 19\text{ V}$ et $V_{ppe} = 928\text{ mV}$.
+Ainsi le gain linéaire :
+$$G = \frac{19}{928 \cdot 10^{-3}} = 20,47$$
+Le gain maximal en décibels est :
+$$G_{\max} = 20\log(20,47) = 26,2\text{ dB}$$
+
+### Tableau de mesure en fonction de la fréquence :
+
+| Fréquence (Hz) | $V_{pp\text{ }s}$ (V) | $V_{pp\text{ }e}$ (V) | Phase $\Delta\varphi$ (degré) | Gain |
+| :--- | :--- | :--- | :--- | :--- |
+| 500 | 1,7 | 1,01 | $+90^\circ$ | 1,68 |
+| 900 | 3,8 | 1,04 | $+80^\circ$ | 3,65 |
+| 1200 | 7,04 | 1,04 | $+72^\circ$ | 6,769 |
+| 1630 | 19 | $944\text{ mV}$ | $+12^\circ$ | 20,13 |
+| 2000 | — | — | $-56^\circ$ | 11,4 |
+| 3600 | 3,12 | 1,04 | $-90^\circ$ | 3 | 
+
+### Courbe de Gain et de phase 
+
+![Courbe de gain](TP1_filtre_passe_bande3.png)
+
+# TP n°2 : Synthèse de filtres
+
+## Préparation
+
+### Partie 1 : Filtre passe-bas de Tchébycheff (ordre 3)
+
+#### 1. Gabarit et facteur de sélectivité \(k\)
 
 **Cahier des charges :**
 
